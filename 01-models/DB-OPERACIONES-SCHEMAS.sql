@@ -1,0 +1,17 @@
+USE master
+GO
+CREATE DATABASE OPERACIONES
+GO
+USE OPERACIONES
+GO
+CREATE SCHEMA Pagos
+
+CREATE TABLE [Pagos].[tiquetes] (
+    id BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    fecha DATE NOT NULL,
+    hora TIME,
+    placa varchar(6) NOT NULL,
+    idCarretera INT NOT NULL,
+    idPeaje SMALLINT NOT NULL,
+    tipoTarifa TINYINT NOT NULL
+)
