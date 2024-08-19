@@ -95,13 +95,18 @@ EXEC [dbo].sp_CreateTriggers 'catalogos', 'carreteras', 1
 EXEC [dbo].sp_CreateTriggers 'catalogos', 'categVehiculos', 1
 EXEC [dbo].sp_CreateTriggers 'catalogos', 'peajes', 1
 EXEC [dbo].sp_CreateTriggers 'catalogos', 'tarifas', 1
-EXEC [dbo].sp_CreateTriggers 'reportes', 'ventas', 1
+EXEC [dbo].sp_CreateTriggers 'reportes', 'ventasCentralizado', 1
 
 -- EXECS IN DB OPERACIONES
 
 USE OPERACIONES
 GO
 EXEC [dbo].sp_CreateTriggers 'pagos', 'tiquetes', 1
+EXEC [dbo].sp_CreateTriggers 'Catalogos_Replicas', 'Carreteras_Replica', 1
+EXEC [dbo].sp_CreateTriggers 'Catalogos_Replicas', 'Peajes_Replica', 1
+EXEC [dbo].sp_CreateTriggers 'Catalogos_Replicas', 'CategVehiculos_Replica', 1
+EXEC [dbo].sp_CreateTriggers 'Catalogos_Replicas', 'Tarifas_Replica', 1
+
 
 
 select * from sys.types

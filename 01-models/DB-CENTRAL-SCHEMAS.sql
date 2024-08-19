@@ -1,5 +1,3 @@
-USE master;
-
 CREATE DATABASE CENTRAL
 GO
 USE CENTRAL
@@ -10,13 +8,13 @@ CREATE SCHEMA Reportes
 GO
 
 CREATE TABLE [Catalogos].[Carreteras] (
-    id INT NOT NULL PRIMARY KEY,
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(100) NOT NULL
 )
 
 CREATE TABLE [Catalogos].[Peajes] (
-    id SMALLINT NOT NULL PRIMARY KEY,
+    id SMALLINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     idCarretera INT NOT NULL,
     CONSTRAINT FK_Peajes_Carreteras FOREIGN KEY (idCarretera) REFERENCES [Catalogos].[Carreteras](id),
     direccion CHAR(1) NOT NULL,
@@ -30,17 +28,21 @@ CREATE TABLE [Catalogos].[categVehiculos] (
 )
 
 CREATE TABLE [Catalogos].[Tarifas] (
-    id TINYINT NOT NULL PRIMARY KEY,
-    monto INT NOT NULL,
+    idPeaje SMALLINT NOT NULL,
     tipoVehiculo TINYINT NOT NULL,
-    CONSTRAINT FK_Tarifas_CategVehiculos_id FOREIGN KEY(tipoVehiculo) REFERENCES [Catalogos].[categVehiculos](id)
+    monto INT NOT NULL,
+    CONSTRAINT FK_Tarifas_CategVehiculos_id FOREIGN KEY(tipoVehiculo) REFERENCES [Catalogos].[categVehiculos](id),
+    CONSTRAINT FK_Tarifas_Peajes_id FOREIGN KEY(idPeaje) REFERENCES [Catalogos].[Peajes](id),
+    PRIMARY KEY( idPeaje, tipoVehiculo )
 )
 
-CREATE TABLE [Reportes].[Ventas](
+CREATE TABLE [Reportes].[VentasCentralizado](
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     montoTotal INT NOT NULL,
-    totalTiquetes INT NOT NULL,
     fecha DATE NOT NULL,
     idPeaje SMALLINT NOT NULL,
-    CONSTRAINT FK_ventasPeajes_Peajes_Id FOREIGN KEY(idPeaje) REFERENCES [Catalogos].[Peajes](id)
+    idRuta INT NOT NULL,
+    CONSTRAINT FK_ventasCentralizado_Peajes_Id FOREIGN KEY(idPeaje) REFERENCES [Catalogos].[Peajes](id),
+    CONSTRAINT FK_ventasCentralizado_Carreteras_Id FOREIGN KEY(idRuta) REFERENCES [Catalogos].[Carreteras](id)
 )
+    
