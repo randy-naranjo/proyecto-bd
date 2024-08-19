@@ -7,7 +7,7 @@ USE OPERACIONES
 IF EXISTS(SELECT distinct name FROM sys.objects WHERE name = 'fnTableFields')
 	DROP FUNCTION dbo.fnTableFields
 GO
---- CREA funci�n de campos de una tabla
+-- CREA funci�n de campos de una tabla
 CREATE FUNCTION [dbo].[fnTableFields] (@Table VARCHAR(MAX), @Alias VARCHAR(10) = NULL)
 	RETURNS VARCHAR(MAX)
 AS
@@ -19,7 +19,7 @@ BEGIN
 	SET @strFields = (SELECT STUFF( 
 							(SELECT CAST(' +' + CHAR(39)+ ',' + CHAR(39) + '+ ' AS varchar(MAX)),  
 								(CASE  
-									WHEN tp.name IN ('smallint', 'int', 'smalldatetime', 'tinyint', 'numeric', 'datetime', 'date', 'time', 'bit') THEN 'RTRIM(CONVERT(VARCHAR(100),' + ISNULL(@Alias + '.', '') + C.name +'))'
+									WHEN tp.name IN ('bigint','smallint', 'int', 'smalldatetime', 'tinyint', 'numeric', 'datetime', 'date', 'time', 'bit', 'char') THEN 'RTRIM(CONVERT(VARCHAR(100),' + ISNULL(@Alias + '.', '') + C.name +'))'
 									ELSE ISNULL(@Alias + '.', '') + C.name
 								END)
 							 FROM sys.columns AS C
@@ -80,7 +80,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM SYS.SYSOBJECTS WHERE name = 'TRG_' + UPPER(RTRIM(@table)))
 		BEGIN
 			DECLARE @Qry VARCHAR(50)
-			SET @Qry = 'DROP TRIGGER TRG_' + UPPER(RTRIM(@table))
+			SET @Qry = 'DROP TRIGGER [' + UPPER(RTRIM(@schema)) + '].[TRG_' + UPPER(RTRIM(@table)) + ']'
 				EXEC sp_sqlexec @Qry
 		END
 		EXEC sp_sqlexec @strTRG
@@ -102,3 +102,6 @@ EXEC [dbo].sp_CreateTriggers 'reportes', 'ventas', 1
 USE OPERACIONES
 GO
 EXEC [dbo].sp_CreateTriggers 'pagos', 'tiquetes', 1
+
+
+select * from sys.types
