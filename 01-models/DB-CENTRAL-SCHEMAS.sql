@@ -28,12 +28,12 @@ CREATE TABLE [Catalogos].[categVehiculos] (
 )
 
 CREATE TABLE [Catalogos].[Tarifas] (
-    idPeaje SMALLINT NOT NULL,
+    idRuta INT NOT NULL,
     tipoVehiculo TINYINT NOT NULL,
     monto INT NOT NULL,
     CONSTRAINT FK_Tarifas_CategVehiculos_id FOREIGN KEY(tipoVehiculo) REFERENCES [Catalogos].[categVehiculos](id),
-    CONSTRAINT FK_Tarifas_Peajes_id FOREIGN KEY(idPeaje) REFERENCES [Catalogos].[Peajes](id),
-    PRIMARY KEY( idPeaje, tipoVehiculo )
+    CONSTRAINT FK_Tarifas_Ruta_id FOREIGN KEY(idRuta) REFERENCES [Catalogos].[Carreteras](id),
+    PRIMARY KEY( idRuta, tipoVehiculo )
 )
 
 CREATE TABLE [Reportes].[VentasCentralizado](

@@ -13,7 +13,7 @@ BEGIN
 
     SELECT @MONTO = monto
     FROM [Catalogos_Replicas].[Tarifas_Replica]
-    WHERE idPeaje = @idPeaje AND tipoVehiculo = @tipoVehiculo;
+    WHERE idRuta = @idCarretera AND tipoVehiculo = @tipoVehiculo;
 
     IF (@MONTO IS NULL)
     BEGIN
@@ -37,9 +37,3 @@ BEGIN
 
 
 END;
-
--- EXEC sp_crearTiquete '123456', 1, 2, 2
-
--- SELECT * FROM [Pagos].[tiquetes]
-
--- SELECT * FROM [TLOG].[dbo].[TransationLog]

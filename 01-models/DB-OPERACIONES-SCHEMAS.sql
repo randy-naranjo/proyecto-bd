@@ -28,12 +28,12 @@ CREATE TABLE [Catalogos_Replicas].[CategVehiculos_Replica] (
 )
 
 CREATE TABLE [Catalogos_Replicas].[Tarifas_Replica] (
-    idPeaje SMALLINT NOT NULL,
+    idRuta INT NOT NULL,
     tipoVehiculo TINYINT NOT NULL,
     monto INT NOT NULL,
     CONSTRAINT FK_Tarifas_CategVehiculos_replica_id FOREIGN KEY(tipoVehiculo) REFERENCES [Catalogos_Replicas].[CategVehiculos_Replica](id),
-    CONSTRAINT FK_Tarifas_Peajes_replica_id FOREIGN KEY(idPeaje) REFERENCES [Catalogos_Replicas].[Peajes_Replica](id),
-    PRIMARY KEY( idPeaje, tipoVehiculo )
+    CONSTRAINT FK_Tarifas_Carretera_replica_id FOREIGN KEY(idRuta) REFERENCES [Catalogos_Replicas].[Carreteras_Replica](id),
+    PRIMARY KEY( idRuta, tipoVehiculo )
 )
 
 CREATE TABLE [Pagos].[tiquetes] (

@@ -131,19 +131,19 @@ BEGIN
     BEGIN
         UPDATE [OPERACIONES].[Catalogos_Replicas].[Tarifas_Replica]
         SET
-            idPeaje = i.idPeaje,
+            idRuta = i.idRuta,
             tipoVehiculo = i.tipoVehiculo,
             monto = i.monto
         FROM inserted i
         INNER JOIN [OPERACIONES].[Catalogos_Replicas].[Tarifas_Replica] AS TR
-        ON i.idPeaje = TR.idPeaje AND i.tipoVehiculo = TR.tipoVehiculo;
+        ON i.idRuta = TR.idRuta AND i.tipoVehiculo = TR.tipoVehiculo;
     END
 
     --ELIMINACION
     IF EXISTS (SELECT * FROM deleted) AND NOT(EXISTS(SELECT * FROM inserted))
     BEGIN
         DELETE FROM [OPERACIONES].[Catalogos_Replicas].[Tarifas_Replica]
-        WHERE idPeaje IN (SELECT idPeaje FROM deleted) AND tipoVehiculo IN (SELECT tipoVehiculo FROM deleted);
+        WHERE idRuta IN (SELECT idRuta FROM deleted) AND tipoVehiculo IN (SELECT tipoVehiculo FROM deleted);
     END
 END;
 
