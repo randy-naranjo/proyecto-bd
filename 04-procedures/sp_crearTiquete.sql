@@ -3,11 +3,14 @@ GO
 
 CREATE PROCEDURE sp_crearTiquete
     @placa VARCHAR(6),
-    @idCarretera INT,
     @idPeaje SMALLINT,
-    @tipoVehiculo TINYINT
+    @tipoVehiculo TINYINT,
+    @fecha date = NULL
 AS
 BEGIN
+    DECLARE @idCarretera INT;
+
+    SELECT @idCarretera = idCarretera FROM [CENTRAL].Catalogos.Peajes WHERE id = @idPeaje
 
     DECLARE @MONTO INT;
 
@@ -21,17 +24,21 @@ BEGIN
     END
     ELSE
     BEGIN
-        DECLARE @Fecha DATE;
+        IF @fecha IS NULL 
+        BEGIN
+            SET @fecha = CAST(GETDATE() AS DATE);
+        END
+        
         DECLARE @Hora TIME;
 
-        SET @Fecha = CAST(GETDATE() AS DATE);
+        
         SET @Hora = CAST(GETDATE() AS TIME);
 
 
         INSERT INTO [Pagos].[tiquetes]
             (fecha, hora, placa, idCarretera, idPeaje, tipoVehiculo, monto)
         VALUES
-            (@Fecha, @Hora, @placa, @idCarretera, @idPeaje, @tipoVehiculo, @MONTO)
+            (@fecha, @Hora, @placa, @idCarretera, @idPeaje, @tipoVehiculo, @MONTO)
     END
 
 
