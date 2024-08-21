@@ -1,7 +1,7 @@
 use OPERACIONES
 GO
 
-CREATE PROCEDURE sp_generarReporteVentasCentralizado
+CREATE PROCEDURE [pagos].[sp_generarReporteVentasCentralizado]
     @Fecha date
 AS
 BEGIN
@@ -16,7 +16,7 @@ BEGIN
         UPDATE Ventas
         SET Ventas.montoTotal = tickets.montoTotal
         FROM [CENTRAL].[Reportes].[VentasCentralizado] AS Ventas
-        INNER JOIN (SELECT * FROM [Pagos].resumenTiquetesXPeaje AS resumenttickets WHERE resumenttickets.fecha = @fecha) AS tickets 
+        INNER JOIN (SELECT * FROM [Pagos].tiquetesMontoSumadoXPeaje AS resumenttickets WHERE resumenttickets.fecha = @fecha) AS tickets 
         ON Ventas.idPeaje = tickets.idPeaje AND Ventas.idRuta = tickets.idRuta AND Ventas.fecha = tickets.fecha
         WHERE Ventas.montoTotal <  tickets.montoTotal;
 
@@ -37,9 +37,9 @@ BEGIN
         -- SI NO HAY REPORTES DE LA FECHA INDICADA LOS GENERA
         INSERT INTO [CENTRAL].[Reportes].[VentasCentralizado]
             ( idRuta, fecha, idPeaje, montoTotal )
-        SELECT * FROM [Pagos].resumenTiquetesXPeaje
+        SELECT * FROM [Pagos].tiquetesMontoSumadoXPeaje
         WHERE fecha = @Fecha;
     END
 END
 
--- exec sp_generarReporteVentasCentralizado '2024-08-20';
+-- exec [pagos].[sp_generarReporteVentasCentralizado] '2024-08-20';

@@ -18,7 +18,7 @@ EXEC msdb.dbo.sp_add_category
    @class = N'JOB',
    @type = N'LOCAL',
    @name = N'[ReportesJobs]';
-
+GO
 EXEC msdb.dbo.sp_add_job
    @job_name = N'GenerarReporteCentralizadoDiario',
    @enabled = 1,
@@ -26,7 +26,7 @@ EXEC msdb.dbo.sp_add_job
    @start_step_id = 1,
    @category_name = N'[ReportesJobs]',
    @owner_login_name = N'sa';
-
+GO
 EXEC msdb.dbo.sp_add_jobstep
    @job_name = N'GenerarReporteCentralizadoDiario',
    @step_name = N'Generar Reporte',
@@ -35,21 +35,22 @@ EXEC msdb.dbo.sp_add_jobstep
    BEGIN
         DECLARE @DiaAnterior DATE;
         SELECT @DiaAnterior = DATEADD(DAY, -1, CAST(GETDATE() AS DATE));
-        EXEC [OPERACIONES].[dbo].[sp_generarReporteVentasCentralizado] @Fecha = @DiaAnterior;
+        EXEC [OPERACIONES].[pagos].[sp_generarReporteVentasCentralizado] @Fecha = @DiaAnterior;
    END
    ',
    @retry_attempts = 0,
    @retry_interval = 0,
    @on_success_action = 1,
    @on_fail_action = 2;
-
+GO
 EXEC msdb.dbo.sp_add_jobschedule
    @job_name = N'GenerarReporteCentralizadoDiario',
    @name = N'Reporte Centralizado de Ventas Diario',
    @freq_type = 4,
    @freq_interval = 1,
    @active_start_time = 000000;  --Medianoche (12:00 AM)
-
+GO
 EXEC msdb.dbo.sp_add_jobserver
    @job_name = N'GenerarReporteCentralizadoDiario',
    @server_name = N'(local)';
+GO

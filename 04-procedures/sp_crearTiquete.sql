@@ -1,7 +1,7 @@
 USE OPERACIONES
 GO
 
-CREATE PROCEDURE sp_crearTiquete
+CREATE PROCEDURE [Pagos].[sp_crearTiquete]
     @placa VARCHAR(6),
     @idPeaje SMALLINT,
     @tipoVehiculo TINYINT,
@@ -10,7 +10,7 @@ AS
 BEGIN
     DECLARE @idCarretera INT;
 
-    SELECT @idCarretera = idCarretera FROM [CENTRAL].Catalogos.Peajes WHERE id = @idPeaje
+    SELECT @idCarretera = idCarretera FROM [Catalogos_Replicas].[Peajes_Replica] WHERE id = @idPeaje
 
     DECLARE @MONTO INT;
 
